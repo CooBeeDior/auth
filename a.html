@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文件读写示例</title>
+</head>
+<body>
+
+<input type="file" id="fileInput">
+<br>
+<div id="fileContent"></div>
+<br>
+<textarea id="textInput" rows="4" cols="50"></textarea>
+<br>
+<button onclick="writeToFile()">写入文件</button>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  
+  reader.onload = function(event) {
+    const fileContent = event.target.result;
+    document.getElementById('fileContent').innerText = fileContent;
+  };
+  
+  reader.readAsText(file);
+});
+
+function writeToFile() {
+  const contentToWrite = document.getElementById('textInput').value;
+  
+  const blob = new Blob([contentToWrite], { type: 'text/plain' });
+  const url = window.URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'output.txt';
+  a.click();
+  
+  window.URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
